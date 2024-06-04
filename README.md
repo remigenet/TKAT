@@ -2,7 +2,7 @@
 
 ![TKAT representation](images/model_representation.jpeg)
 
-This folder includes the original code implemented for the [paper]() of the same name.
+This folder includes the original code implemented for the paper of the same name (link to be added).
 
 It is inspired on the Temporal Fusion Transformer by [google-research](https://github.com/google-research/google-research/tree/master/tft) and the [Temporal Kolmogorov Arnold Network](https://github.com/remigenet/TKAN). 
 
