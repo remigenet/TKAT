@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "tkat" 
-version = "0.1.0" 
+version = "0.1.1" 
 description = "Temporal KAN Transformer"
 authors = [ "Rémi Genet", "Hugo Inzirillo"]  
 readme = "README.md"  
@@ -14,4 +14,4 @@ packages = [{include = "tkat"}]
 python = ">=3.10,<4.0" 
 numpy = ">=1.2,<2"
 tensorflow = ">=2.8,<3" 
-tkan = ">=0.2.0,<0.3.0"
+tkan = ">=0.3.0,<0.4.0"
