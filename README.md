@@ -81,14 +81,11 @@ For a more detailed example please look to the notebook in the example folder.
 
 Please cite our work if you use this repo:
 ```
-@misc{genetinzirillotkat,
-      title={A Temporal Kolmogorov-Arnold Transformer for Time Series Forecasting}, 
-      author={Remi Genet, Hugo Inzirillo},
-      year={2024},
-      eprint={2406.02486},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2406.02486}, 
+@article{genet2024temporal,
+  title={A Temporal Kolmogorov-Arnold Transformer for Time Series Forecasting},
+  author={Genet, Remi and Inzirillo, Hugo},
+  journal={arXiv preprint arXiv:2406.02486},
+  year={2024}
 }
 ```
 
