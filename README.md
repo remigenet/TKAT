@@ -79,6 +79,18 @@ The known inputs should be the last features in X_train.
 
 For a more detailed example please look to the notebook in the example folder.
 
+Please cite our work if you use this repo:
+```
+@misc{genetinzirillotkat,
+      title={A Temporal Kolmogorov-Arnold Transformer for Time Series Forecasting}, 
+      author={Remi Genet, Hugo Inzirillo},
+      year={2024},
+      eprint={2406.02486},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2406.02486}, 
+}
+```
 
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
