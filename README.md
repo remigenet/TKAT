@@ -2,7 +2,7 @@
 
 ![TKAT representation](images/model_representation.jpeg)
 
-This folder includes the original code implemented for the [paper](https://arxiv.org/abs/2406.02486) of the same name.
+This folder includes the original code implemented for the [paper](https://arxiv.org/abs/2406.02486) of the same name. The model is made in keras3 and is supporting all backend (jax, tensorflow, pytorch).
 
 It is inspired on the Temporal Fusion Transformer by [google-research](https://github.com/google-research/google-research/tree/master/tft) and the [Temporal Kolmogorov Arnold Network](https://github.com/remigenet/TKAN). 
 

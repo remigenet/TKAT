@@ -1,6 +1,7 @@
-import tensorflow as tf
-from tensorflow.keras import Model, Input
-from tensorflow.keras.layers import Layer, LSTM, Dense, Input, Add, LayerNormalization, Multiply, Reshape, Activation, TimeDistributed, Flatten, Lambda, MultiHeadAttention, Concatenate
+import keras 
+from keras import ops
+from keras import Model, Input
+from keras.layers import Layer, LSTM, Dense, Input, Add, LayerNormalization, Multiply, Reshape, Activation, TimeDistributed, Flatten, Lambda, MultiHeadAttention, Concatenate
 from tkan import TKAN
 
 class AddAndNorm(Layer):
@@ -21,18 +22,20 @@ class Gate(Layer):
     def __init__(self, hidden_layer_size = None, **kwargs):
         super(Gate, self).__init__(**kwargs)
         self.hidden_layer_size = hidden_layer_size
+        
 
     def build(self, input_shape):
         if self.hidden_layer_size is None:
             self.hidden_layer_size = input_shape[-1]
         self.dense_layer = Dense(self.hidden_layer_size)
         self.gated_layer = Dense(self.hidden_layer_size, activation='sigmoid')
+        self.multiply = Multiply()
         super(Gate, self).build(input_shape)
 
     def call(self, inputs):
         dense_output = self.dense_layer(inputs)
         gated_output = self.gated_layer(inputs)
-        return Multiply()([dense_output, gated_output])
+        return self.multiply([dense_output, gated_output])
 
     def compute_output_shape(self, input_shape):
         return input_shape[:-1] + (self.hidden_layer_size,)
@@ -89,7 +92,7 @@ class VariableSelectionNetwork(Layer):
         # Variable selection weights
         mlp_outputs = self.mlp_dense(flatten)
         sparse_weights = Activation('softmax')(mlp_outputs)
-        sparse_weights = tf.expand_dims(sparse_weights, axis=2)
+        sparse_weights = ops.expand_dims(sparse_weights, axis=2)
         
         # Non-linear Processing & weight application
         trans_emb_list = []
@@ -97,9 +100,9 @@ class VariableSelectionNetwork(Layer):
             grn_output = self.grn_layers[i](inputs[:, :, :, i])
             trans_emb_list.append(grn_output)
         
-        transformed_embedding = tf.stack(trans_emb_list, axis=-1)
+        transformed_embedding = ops.stack(trans_emb_list, axis=-1)
         combined = Multiply()([sparse_weights, transformed_embedding])
-        temporal_ctx = tf.reduce_sum(combined, axis=-1)
+        temporal_ctx = ops.sum(combined, axis=-1)
         
         return temporal_ctx
 
@@ -125,7 +128,7 @@ class EmbeddingLayer(Layer):
 
     def call(self, inputs):
         embeddings = [dense_layer(inputs[:, :, i:i+1]) for i, dense_layer in enumerate(self.dense_layers)]
-        return tf.stack(embeddings, axis=-1)
+        return ops.stack(embeddings, axis=-1)
 
     def compute_output_shape(self, input_shape):
         return input_shape[:-1] + (self.num_hidden, input_shape[-1])
@@ -145,12 +148,12 @@ def TKAT(sequence_length: int, num_unknow_features: int, num_know_features: int,
         use_tkan (bool, optional): Wether or not to use TKAN instead of LSTM. Defaults to True.
 
     Returns:
-        tf.keras.Model: The TKAT model
+        keras.Model: The TKAT model
     """
 
     inputs = Input(shape=(sequence_length+n_ahead, num_unknow_features + num_know_features))
 
-    embedded_inputs = EmbeddingLayer(num_embedding)(inputs)
+    embedded_inputs = EmbeddingLayer(num_embedding, name = 'embedding_layer')(inputs)
     
     past_features = Lambda(lambda x: x[:, :sequence_length, :, :], name='past_observed_and_known')(embedded_inputs)
     variable_selection_past = VariableSelectionNetwork(num_hidden, name='vsn_past_features')(past_features)
